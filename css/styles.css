@@ -326,7 +326,7 @@ body.nav-compact .navbar {
     gap: 0;
     flex-shrink: 0;
     text-decoration: none;
-    margin-right: auto;
+    margin-right: 30px;
     padding: 0;
 }
 
@@ -374,9 +374,10 @@ body.nav-compact .navbar {
 .nav-menu {
     display: flex;
     align-items: center;
-    gap: 2px;
+    gap: 1px;
     list-style: none;
     margin: 0;
+    margin-left: auto;
     padding: 0;
 }
 
@@ -384,14 +385,14 @@ body.nav-compact .navbar {
 .nav-link {
     display: inline-flex;
     align-items: center;
-    gap: 5px;
+    gap: 4px;
     color: var(--neutral-600);
     font-family: var(--font-sans);
     font-weight: 600;
-    font-size: 0.75rem;
-    letter-spacing: 0.07em;
+    font-size: 0.68rem;
+    letter-spacing: 0.05em;
     text-transform: uppercase;
-    padding: 8px 13px;
+    padding: 7px 8px;
     border-radius: var(--radius-sm);
     transition: color 0.2s ease, background 0.2s ease;
     position: relative;

@@ -1,16 +1,25 @@
 /* ============================================
    SEDBM2025 — Main JavaScript
+   - initShell(): persistent UI (runs once)
+   - initPageContent(): per-page content (runs
+     on every SPA navigation via fetch router)
    ============================================ */
 
-document.addEventListener('DOMContentLoaded', () => {
-    // ---- Navbar scroll effect ----
+let countdownInterval = null;
+let countersAnimated = false;
+let aosCheckBound = false;
+let smoothScrollBound = false;
+
+/* ──────────────────────────────────────────────
+   SHELL (runs once on first DOMContentLoaded)
+   ────────────────────────────────────────────── */
+function initShell() {
     const navbar = document.getElementById('navbar');
     const backToTop = document.getElementById('backToTop');
 
     function handleScroll() {
         const scrollY = window.scrollY;
 
-        // Compact mode: hide top bar and move navbar up on scroll
         if (scrollY > 50) {
             document.body.classList.add('nav-compact');
         } else {
@@ -18,7 +27,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (navbar) {
-            // Navbar color: add scrolled class for white bg (only on pages without default scrolled)
             if (scrollY > 80) {
                 navbar.classList.add('scrolled');
             } else if (!navbar.dataset.alwaysScrolled) {
@@ -26,7 +34,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        // Back to top button
         if (backToTop) {
             if (scrollY > 500) {
                 backToTop.classList.add('visible');
@@ -36,7 +43,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Mark pages that start with scrolled class so we don't remove it
     if (navbar && navbar.classList.contains('scrolled')) {
         navbar.dataset.alwaysScrolled = 'true';
     }
@@ -60,35 +66,29 @@ document.addEventListener('DOMContentLoaded', () => {
             navMenu.classList.toggle('active');
         });
 
-        // Close button inside drawer
         if (navClose) {
             navClose.addEventListener('click', closeMenu);
         }
 
-        // Close when clicking the overlay (::before pseudo-element area outside drawer)
         navMenu.addEventListener('click', (e) => {
             if (e.target === navMenu) closeMenu();
         });
 
-        // Close menu when clicking a regular nav link (not dropdown toggles)
         navMenu.querySelectorAll('.nav-link').forEach(link => {
-            if (!link.closest('.nav-dropdown') || link.parentElement.tagName === 'LI' && !link.parentElement.classList.contains('nav-dropdown')) {
+            if (!link.closest('.nav-dropdown') || (link.parentElement.tagName === 'LI' && !link.parentElement.classList.contains('nav-dropdown'))) {
                 link.addEventListener('click', closeMenu);
             }
         });
 
-        // Close menu when clicking dropdown sub-links
         navMenu.querySelectorAll('.dropdown-menu a').forEach(link => {
             link.addEventListener('click', closeMenu);
         });
 
-        // Mobile dropdown toggle
         navMenu.querySelectorAll('.nav-dropdown > .nav-link').forEach(toggle => {
             toggle.addEventListener('click', (e) => {
                 if (window.innerWidth <= 1024) {
                     e.preventDefault();
                     const parent = toggle.parentElement;
-                    // Close other open dropdowns
                     navMenu.querySelectorAll('.nav-dropdown.open').forEach(dd => {
                         if (dd !== parent) dd.classList.remove('open');
                     });
@@ -98,37 +98,62 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // ---- Active nav link on scroll ----
-    const sections = document.querySelectorAll('section[id]');
-    const navLinks = document.querySelectorAll('.nav-link[href^="#"]');
-
-    function updateActiveLink() {
-        const scrollY = window.scrollY + 120;
-        let currentSection = '';
-
-        sections.forEach(section => {
-            const sectionTop = section.offsetTop;
-            const sectionHeight = section.offsetHeight;
-            if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
-                currentSection = section.getAttribute('id');
+    // ---- Smooth scroll for in-page anchors (delegated) ----
+    if (!smoothScrollBound) {
+        document.addEventListener('click', (e) => {
+            const a = e.target.closest('a[href^="#"]');
+            if (!a) return;
+            const href = a.getAttribute('href');
+            if (!href || href === '#') return;
+            // Skip router hash links like #contact.html or #home.html|anchor
+            if (/\.html/i.test(href)) return;
+            const id = href.slice(1);
+            const target = document.getElementById(id);
+            if (target) {
+                e.preventDefault();
+                target.scrollIntoView({ behavior: 'smooth' });
             }
         });
-
-        navLinks.forEach(link => {
-            link.classList.remove('active');
-            if (link.getAttribute('href') === `#${currentSection}`) {
-                link.classList.add('active');
-            }
-        });
+        smoothScrollBound = true;
     }
 
-    window.addEventListener('scroll', updateActiveLink);
+    // ---- AOS scroll/resize triggers (bound once) ----
+    if (!aosCheckBound) {
+        window.addEventListener('scroll', runAOSCheck);
+        window.addEventListener('resize', runAOSCheck);
+        window.addEventListener('scroll', runCounterAnimation);
+        aosCheckBound = true;
+    }
+}
 
-    // ---- Countdown Timer ----
+/* ──────────────────────────────────────────────
+   PAGE CONTENT (runs after each fetch navigation)
+   ────────────────────────────────────────────── */
+function initPageContent() {
+    initCountdown();
+    initParticles();
+    countersAnimated = false;
+    setTimeout(runAOSCheck, 100);
+    setTimeout(runCounterAnimation, 200);
+}
+
+function initCountdown() {
+    if (countdownInterval) {
+        clearInterval(countdownInterval);
+        countdownInterval = null;
+    }
+
+    const daysEl = document.getElementById('days');
+    const hoursEl = document.getElementById('hours');
+    const minutesEl = document.getElementById('minutes');
+    const secondsEl = document.getElementById('seconds');
+
+    if (!daysEl && !hoursEl && !minutesEl && !secondsEl) return;
+
     const conferenceDate = new Date('2025-11-13T09:00:00+07:00').getTime();
 
-    function updateCountdown() {
-        const now = new Date().getTime();
+    function update() {
+        const now = Date.now();
         const distance = conferenceDate - now;
 
         const days = Math.max(0, Math.floor(distance / (1000 * 60 * 60 * 24)));
@@ -136,108 +161,83 @@ document.addEventListener('DOMContentLoaded', () => {
         const minutes = Math.max(0, Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)));
         const seconds = Math.max(0, Math.floor((distance % (1000 * 60)) / 1000));
 
-        const daysEl = document.getElementById('days');
-        const hoursEl = document.getElementById('hours');
-        const minutesEl = document.getElementById('minutes');
-        const secondsEl = document.getElementById('seconds');
-
         if (daysEl) daysEl.textContent = String(days).padStart(2, '0');
         if (hoursEl) hoursEl.textContent = String(hours).padStart(2, '0');
         if (minutesEl) minutesEl.textContent = String(minutes).padStart(2, '0');
         if (secondsEl) secondsEl.textContent = String(seconds).padStart(2, '0');
     }
 
-    updateCountdown();
-    setInterval(updateCountdown, 1000);
+    update();
+    countdownInterval = setInterval(update, 1000);
+}
 
-    // ---- Particle effect in hero ----
+function initParticles() {
     const particlesContainer = document.getElementById('particles');
+    if (!particlesContainer || particlesContainer.children.length > 0) return;
 
-    if (particlesContainer) {
-        for (let i = 0; i < 40; i++) {
-            const particle = document.createElement('div');
-            particle.classList.add('particle');
-            particle.style.left = Math.random() * 100 + '%';
-            particle.style.width = particle.style.height = (Math.random() * 4 + 2) + 'px';
-            particle.style.animationDuration = (Math.random() * 15 + 10) + 's';
-            particle.style.animationDelay = (Math.random() * 10) + 's';
-            particle.style.opacity = Math.random() * 0.3 + 0.1;
-            particlesContainer.appendChild(particle);
+    for (let i = 0; i < 40; i++) {
+        const particle = document.createElement('div');
+        particle.classList.add('particle');
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.width = particle.style.height = (Math.random() * 4 + 2) + 'px';
+        particle.style.animationDuration = (Math.random() * 15 + 10) + 's';
+        particle.style.animationDelay = (Math.random() * 10) + 's';
+        particle.style.opacity = String(Math.random() * 0.3 + 0.1);
+        particlesContainer.appendChild(particle);
+    }
+}
+
+function runAOSCheck() {
+    const aosElements = document.querySelectorAll('[data-aos]:not(.aos-animate)');
+    const windowHeight = window.innerHeight;
+    const triggerOffset = 60;
+
+    aosElements.forEach(el => {
+        const rect = el.getBoundingClientRect();
+        const delay = parseInt(el.getAttribute('data-aos-delay')) || 0;
+
+        if (rect.top < windowHeight - triggerOffset) {
+            setTimeout(() => el.classList.add('aos-animate'), delay);
         }
-    }
-
-    // ---- Simple AOS (Animate on Scroll) ----
-    const aosElements = document.querySelectorAll('[data-aos]');
-
-    function checkAOS() {
-        const windowHeight = window.innerHeight;
-        const triggerOffset = 60;
-
-        aosElements.forEach(el => {
-            const rect = el.getBoundingClientRect();
-            const delay = parseInt(el.getAttribute('data-aos-delay')) || 0;
-
-            if (rect.top < windowHeight - triggerOffset) {
-                setTimeout(() => {
-                    el.classList.add('aos-animate');
-                }, delay);
-            }
-        });
-    }
-
-    window.addEventListener('scroll', checkAOS);
-    window.addEventListener('resize', checkAOS);
-    // Initial check with slight delay for page load
-    setTimeout(checkAOS, 100);
-
-    // ---- Counter Animation ----
-    const counters = document.querySelectorAll('.stat-number[data-count]');
-    let countersAnimated = false;
-
-    function animateCounters() {
-        if (countersAnimated) return;
-
-        const statsBar = document.querySelector('.stats-bar');
-        if (!statsBar) return;
-
-        const rect = statsBar.getBoundingClientRect();
-        if (rect.top < window.innerHeight && rect.bottom > 0) {
-            countersAnimated = true;
-            counters.forEach(counter => {
-                const target = parseInt(counter.getAttribute('data-count'));
-                const duration = 1500;
-                const startTime = performance.now();
-
-                function update(currentTime) {
-                    const elapsed = currentTime - startTime;
-                    const progress = Math.min(elapsed / duration, 1);
-                    // Ease out cubic
-                    const eased = 1 - Math.pow(1 - progress, 3);
-                    counter.textContent = Math.round(target * eased);
-                    if (progress < 1) {
-                        requestAnimationFrame(update);
-                    } else {
-                        counter.textContent = target;
-                    }
-                }
-                requestAnimationFrame(update);
-            });
-        }
-    }
-
-    window.addEventListener('scroll', animateCounters);
-    setTimeout(animateCounters, 200);
-
-    // ---- Smooth scroll for anchor links ----
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            const targetId = this.getAttribute('href');
-            if (targetId === '#') return;
-            const target = document.querySelector(targetId);
-            if (target) {
-                e.preventDefault();
-                target.scrollIntoView({ behavior: 'smooth' });
-            }
-        });
     });
+}
+
+function runCounterAnimation() {
+    if (countersAnimated) return;
+
+    const statsBar = document.querySelector('.stats-bar');
+    if (!statsBar) return;
+
+    const rect = statsBar.getBoundingClientRect();
+    if (rect.top < window.innerHeight && rect.bottom > 0) {
+        countersAnimated = true;
+        const counters = document.querySelectorAll('.stat-number[data-count]');
+        counters.forEach(counter => {
+            const target = parseInt(counter.getAttribute('data-count'));
+            const duration = 1500;
+            const startTime = performance.now();
+
+            function update(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const eased = 1 - Math.pow(1 - progress, 3);
+                counter.textContent = Math.round(target * eased);
+                if (progress < 1) {
+                    requestAnimationFrame(update);
+                } else {
+                    counter.textContent = target;
+                }
+            }
+            requestAnimationFrame(update);
+        });
+    }
+}
+
+/* Expose for the router to call after each navigation */
+window.SEDBM_PAGE_INIT = initPageContent;
+
+/* Boot */
+document.addEventListener('DOMContentLoaded', () => {
+    initShell();
+    initPageContent();
 });

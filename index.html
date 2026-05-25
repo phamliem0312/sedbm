@@ -10,14 +10,16 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="css/styles.css">
     <style>
-        /* Iframe used to embed page content under the shared menu/footer */
-        .embed-frame {
+        /* Container that hosts dynamically fetched page content */
+        #pageContent {
             display: block;
             width: 100%;
-            border: 0;
             min-height: 60vh;
             background: var(--neutral-50, #f7f7f8);
-            overflow: hidden;
+        }
+        #pageContent.is-loading {
+            opacity: 0.4;
+            transition: opacity 0.15s ease;
         }
     </style>
 </head>
@@ -57,75 +59,73 @@
                 <button class="nav-close" id="navClose" aria-label="Close menu">
                     <i class="fas fa-times"></i>
                 </button>
-
-                <li><a href="#home.html" class="nav-link" data-page="home.html">Home</a></li>
-
                 <li class="nav-dropdown">
-                    <a href="#" class="nav-link">
-                        About <i class="fas fa-chevron-down"></i>
+                    <a href="#history.html" class="nav-link" data-page="history.html">
+                        History <i class="fas fa-chevron-down"></i>
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a href="#history.html" data-page="history.html">
-                            <i class="fas fa-history"></i> SEDBM History
-                        </a></li>
-                        <li><a href="#scientific-committee.html" data-page="scientific-committee.html">
-                            <i class="fas fa-users-cog"></i> Scientific Committee
-                        </a></li>
+                        <li><a href="#">SEDBM 2018</a></li>
+                        <li><a href="#">SEDBM 2019</a></li>
+                        <li><a href="#">SEDBM 2020</a></li>
+                        <li><a href="#">SEDBM 2021</a></li>
+                        <li><a href="#">SEDBM 2022</a></li>
+                        <li><a href="#">SEDBM 2023</a></li>
+                        <li><a href="#">SEDBM 2024</a></li>
+                        <li><a href="#history.html" data-page="history.html">SEDBM 2025</a></li>
                     </ul>
                 </li>
 
-                <li><a href="#keynote-speakers.html" class="nav-link" data-page="keynote-speakers.html">Speakers</a></li>
+                <li><a href="#keynote-speakers.html" class="nav-link" data-page="keynote-speakers.html">Keynote Speakers</a></li>
+
+                <li><a href="#scientific-committee.html" class="nav-link" data-page="scientific-committee.html">Scientific Committee</a></li>
+
+                <li><a href="#call-for-paper.html" class="nav-link" data-page="call-for-paper.html">Call for paper</a></li>
 
                 <li class="nav-dropdown">
                     <a href="#" class="nav-link">
-                        Papers <i class="fas fa-chevron-down"></i>
+                        Submission and Registration <i class="fas fa-chevron-down"></i>
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a href="#call-for-paper.html" data-page="call-for-paper.html">
-                            <i class="fas fa-bullhorn"></i> Call for Papers
-                        </a></li>
-                        <li><a href="#submission.html" data-page="submission.html">
-                            <i class="fas fa-upload"></i> Submission Guidelines
-                        </a></li>
-                        <li><a href="#publication.html" data-page="publication.html">
-                            <i class="fas fa-book-open"></i> Journals
-                        </a></li>
-                        <li><a href="#proceedings.html" data-page="proceedings.html">
-                            <i class="fas fa-layer-group"></i> Proceedings
-                        </a></li>
+                        <li><a href="#submission.html" data-page="submission.html">Submission guideline</a></li>
+                        <li><a href="#registration.html" data-page="registration.html">Registration</a></li>
+                        <li><a href="#submission.html" data-page="submission.html">Importance date</a></li>
                     </ul>
                 </li>
 
                 <li class="nav-dropdown">
                     <a href="#" class="nav-link">
-                        Programme <i class="fas fa-chevron-down"></i>
+                        Publication <i class="fas fa-chevron-down"></i>
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a href="#programme.html" data-page="programme.html">
-                            <i class="fas fa-calendar-check"></i> Conference Programme
-                        </a></li>
-                        <li><a href="#venue.html" data-page="venue.html">
-                            <i class="fas fa-map-marker-alt"></i> Venue &amp; Tourism
-                        </a></li>
+                        <li><a href="#publication.html" data-page="publication.html">Journals</a></li>
+                        <li><a href="#proceedings.html" data-page="proceedings.html">Proceedings</a></li>
                     </ul>
                 </li>
 
-                <li><a href="#registration.html" class="nav-link" data-page="registration.html">Registration</a></li>
-                <li><a href="#home.html|contact" class="nav-link" data-page="home.html" data-anchor="contact">Contact</a></li>
+                <li><a href="#programme.html" class="nav-link" data-page="programme.html">Programme</a></li>
 
-                <!-- CTA -->
-                <li class="nav-cta-item">
-                    <a href="https://cmt3.research.microsoft.com/" target="_blank" class="nav-cta">
-                        <i class="fas fa-paper-plane"></i> Submit Paper
+                <li class="nav-dropdown">
+                    <a href="#venue.html" class="nav-link" data-page="venue.html">
+                        Venue <i class="fas fa-chevron-down"></i>
                     </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#venue.html" data-page="venue.html">Conference</a></li>
+                        <li><a href="#venue.html" data-page="venue.html">Venue</a></li>
+                        <li><a href="#venue.html" data-page="venue.html">Tourism</a></li>
+                        <li><a href="#venue.html" data-page="venue.html">Visa</a></li>
+                        <li><a href="#venue.html" data-page="venue.html">Procedure</a></li>
+                        <li><a href="#venue.html" data-page="venue.html">Visit Hanoi</a></li>
+                        <li><a href="#venue.html" data-page="venue.html">Travel and Accommodation</a></li>
+                    </ul>
                 </li>
+
+                <li><a href="#contact.html" class="nav-link" data-page="contact.html">Contact us</a></li>
             </ul>
         </div>
     </nav>
 
-    <!-- Embedded page content -->
-    <iframe id="embedFrame" class="embed-frame" name="embedFrame"
-            title="Page content" scrolling="no"></iframe>
+    <!-- Dynamically loaded page content (fetched via SPA router) -->
+    <main id="pageContent"></main>
 
     <!-- Footer -->
     <footer class="footer">
@@ -186,11 +186,12 @@
     <script src="js/main.js"></script>
     <script>
     /* ============================================
-       Shell router — controls the embedded iframe
+       SPA Router — fetches sub-pages and injects
+       their <body> into #pageContent. No iframe.
        ============================================ */
     (function () {
-        var DEFAULT_PAGE = 'home.html';
-        var PAGES = {
+        const DEFAULT_PAGE = 'home.html';
+        const PAGES = {
             'home.html': 1,
             'history.html': 1,
             'scientific-committee.html': 1,
@@ -201,17 +202,27 @@
             'proceedings.html': 1,
             'programme.html': 1,
             'venue.html': 1,
-            'registration.html': 1
+            'registration.html': 1,
+            'contact.html': 1
         };
+        const SHELL_SCRIPTS = /(?:^|\/)(?:main|embed-bridge)\.js(?:[?#]|$)/i;
+        const HOSTED_STYLES = new Set();
 
-        var frame = document.getElementById('embedFrame');
-        var currentPage = '';
+        const container = document.getElementById('pageContent');
+        let currentPage = '';
+        let inflight = 0;
+
+        // Track stylesheets already loaded by the shell
+        document.querySelectorAll('link[rel="stylesheet"]').forEach(link => {
+            const href = link.getAttribute('href');
+            if (href) HOSTED_STYLES.add(href);
+        });
 
         function parseHash() {
-            var raw = (window.location.hash || '').replace(/^#/, '');
+            const raw = (window.location.hash || '').replace(/^#/, '');
             if (!raw) return { page: DEFAULT_PAGE, anchor: '' };
-            var bar = raw.indexOf('|');
-            var page, anchor;
+            const bar = raw.indexOf('|');
+            let page, anchor;
             if (bar >= 0) {
                 page = raw.slice(0, bar);
                 anchor = raw.slice(bar + 1);
@@ -220,7 +231,7 @@
                 anchor = '';
             }
             if (!PAGES[page]) return { page: DEFAULT_PAGE, anchor: '' };
-            return { page: page, anchor: anchor };
+            return { page, anchor };
         }
 
         function buildHash(page, anchor) {
@@ -228,73 +239,160 @@
         }
 
         function setActiveLink(page) {
-            var links = document.querySelectorAll('.nav-menu a[data-page]');
-            for (var i = 0; i < links.length; i++) {
-                if (links[i].getAttribute('data-page') === page) {
-                    links[i].classList.add('active');
-                } else {
-                    links[i].classList.remove('active');
-                }
-            }
+            const links = document.querySelectorAll('.nav-menu a[data-page]');
+            links.forEach(link => {
+                link.classList.toggle('active', link.getAttribute('data-page') === page);
+            });
         }
 
-        function scrollIframeTo(anchor) {
-            try {
-                var doc = frame.contentDocument || frame.contentWindow.document;
-                var el = anchor ? doc.getElementById(anchor) : null;
+        function scrollToAnchor(anchor) {
+            if (anchor) {
+                const el = document.getElementById(anchor);
                 if (el) {
-                    var rect = el.getBoundingClientRect();
-                    var navOffset = 120;
+                    const rect = el.getBoundingClientRect();
+                    const navOffset = 120;
                     window.scrollTo({
-                        top: rect.top + window.scrollY + frame.offsetTop - navOffset,
+                        top: rect.top + window.scrollY - navOffset,
                         behavior: 'smooth'
                     });
-                } else {
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    return;
                 }
-            } catch (e) {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
             }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        function loadPage(page, anchor, replace) {
+        function ensureStylesheets(doc) {
+            doc.head.querySelectorAll('link[rel="stylesheet"]').forEach(link => {
+                const href = link.getAttribute('href');
+                if (!href || HOSTED_STYLES.has(href)) return;
+                const newLink = document.createElement('link');
+                newLink.rel = 'stylesheet';
+                newLink.href = href;
+                document.head.appendChild(newLink);
+                HOSTED_STYLES.add(href);
+            });
+
+            doc.head.querySelectorAll('style').forEach(style => {
+                const tag = document.createElement('style');
+                tag.setAttribute('data-page-style', '1');
+                tag.textContent = style.textContent;
+                document.head.appendChild(tag);
+            });
+        }
+
+        function clearPageStyles() {
+            document.querySelectorAll('style[data-page-style]').forEach(s => s.remove());
+        }
+
+        function executeScripts(root) {
+            root.querySelectorAll('script').forEach(oldScript => {
+                const src = oldScript.getAttribute('src');
+                if (src && SHELL_SCRIPTS.test(src)) {
+                    oldScript.remove();
+                    return;
+                }
+                const newScript = document.createElement('script');
+                for (const attr of oldScript.attributes) {
+                    newScript.setAttribute(attr.name, attr.value);
+                }
+                if (!src) newScript.textContent = oldScript.textContent;
+                oldScript.parentNode.replaceChild(newScript, oldScript);
+            });
+        }
+
+        async function loadPage(page, anchor, replace) {
             if (!PAGES[page]) page = DEFAULT_PAGE;
-            var hash = buildHash(page, anchor);
+            const hash = buildHash(page, anchor);
+
             if (replace) {
                 history.replaceState(null, '', hash);
             } else if (window.location.hash !== hash) {
-                history.replaceState(null, '', hash);
+                history.pushState(null, '', hash);
             }
             setActiveLink(page);
 
             if (page === currentPage) {
-                scrollIframeTo(anchor);
+                scrollToAnchor(anchor);
                 return;
             }
-            currentPage = page;
-            frame.style.minHeight = '60vh';
-            frame.removeAttribute('style');
-            frame.style.minHeight = '60vh';
 
-            var pendingAnchor = anchor;
-            var onLoad = function () {
-                frame.removeEventListener('load', onLoad);
-                setTimeout(function () { scrollIframeTo(pendingAnchor); }, 80);
-            };
-            frame.addEventListener('load', onLoad);
-            frame.src = page;
+            const ticket = ++inflight;
+            container.classList.add('is-loading');
+
+            try {
+                const res = await fetch(page, { credentials: 'same-origin' });
+                if (!res.ok) throw new Error('HTTP ' + res.status);
+                const html = await res.text();
+                if (ticket !== inflight) return; // a newer navigation superseded us
+
+                const doc = new DOMParser().parseFromString(html, 'text/html');
+
+                clearPageStyles();
+                ensureStylesheets(doc);
+
+                container.innerHTML = doc.body.innerHTML;
+                executeScripts(container);
+
+                if (doc.title) document.title = doc.title;
+
+                currentPage = page;
+
+                if (typeof window.SEDBM_PAGE_INIT === 'function') {
+                    window.SEDBM_PAGE_INIT();
+                }
+
+                // Give layout/paint a frame, then scroll
+                requestAnimationFrame(() => scrollToAnchor(anchor));
+            } catch (err) {
+                container.innerHTML =
+                    '<div style="padding:80px 24px;text-align:center;color:var(--neutral-600);">' +
+                    '<h2 style="font-family:var(--font-serif);color:var(--primary-900);">Page failed to load</h2>' +
+                    '<p>' + String(err.message || err) + '</p></div>';
+            } finally {
+                if (ticket === inflight) container.classList.remove('is-loading');
+            }
         }
 
-        // Intercept menu clicks
-        document.addEventListener('click', function (e) {
-            var a = e.target.closest ? e.target.closest('a[data-page]') : null;
+        // ---- Intercept clicks on internal links ----
+        document.addEventListener('click', (e) => {
+            const a = e.target.closest && e.target.closest('a');
             if (!a) return;
+            if (a.target === '_blank') return;
+            if (e.defaultPrevented) return;
+            if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+
+            let page = a.getAttribute('data-page');
+            let anchor = a.getAttribute('data-anchor') || '';
+
+            if (!page) {
+                const href = a.getAttribute('href');
+                if (!href) return;
+                if (/^(https?:|mailto:|tel:|javascript:)/i.test(href)) return;
+
+                // Hash-only links (in-page anchors) handled by smooth-scroll in main.js
+                if (href.charAt(0) === '#') {
+                    // But hash refs like #contact.html should route
+                    const cleaned = href.replace(/^#/, '');
+                    const bar = cleaned.indexOf('|');
+                    const filePart = bar >= 0 ? cleaned.slice(0, bar) : cleaned;
+                    if (PAGES[filePart]) {
+                        e.preventDefault();
+                        const anchorPart = bar >= 0 ? cleaned.slice(bar + 1) : '';
+                        loadPage(filePart, anchorPart, false);
+                    }
+                    return;
+                }
+
+                const parts = href.split('#');
+                const fileName = parts[0].split('/').pop();
+                if (!PAGES[fileName]) return;
+                page = fileName;
+                anchor = parts[1] || '';
+            }
+
             e.preventDefault();
-            var page = a.getAttribute('data-page');
-            var anchor = a.getAttribute('data-anchor') || '';
-            // Close mobile menu
-            var navToggle = document.getElementById('navToggle');
-            var navMenu = document.getElementById('navMenu');
+            const navToggle = document.getElementById('navToggle');
+            const navMenu = document.getElementById('navMenu');
             if (navToggle && navMenu) {
                 navToggle.classList.remove('active');
                 navMenu.classList.remove('active');
@@ -303,35 +401,22 @@
         });
 
         // Browser back/forward
-        window.addEventListener('hashchange', function () {
-            var r = parseHash();
+        window.addEventListener('hashchange', () => {
+            const r = parseHash();
             loadPage(r.page, r.anchor, true);
         });
 
-        // Messages from iframe (height + internal navigation)
-        window.addEventListener('message', function (e) {
-            var data = e.data;
-            if (!data || typeof data !== 'object') return;
-            if (data.type === 'sedbm-height') {
-                if (typeof data.height === 'number' && data.height > 0) {
-                    frame.style.height = data.height + 'px';
-                }
-            } else if (data.type === 'sedbm-navigate') {
-                loadPage(data.page, data.hash || '', false);
-            }
-        });
-
-        // Back-to-top should scroll parent, not navigate
-        var btt = document.getElementById('backToTop');
+        // Back-to-top: scroll, don't navigate
+        const btt = document.getElementById('backToTop');
         if (btt) {
-            btt.addEventListener('click', function (e) {
+            btt.addEventListener('click', (e) => {
                 e.preventDefault();
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             });
         }
 
         // Initial load
-        var initial = parseHash();
+        const initial = parseHash();
         loadPage(initial.page, initial.anchor, true);
     })();
     </script>
