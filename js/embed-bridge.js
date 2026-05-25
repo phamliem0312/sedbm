@@ -1,5 +1,5 @@
 /* ============================================
-   SEDBM2025 — Embed Bridge
+   SEDBM2026 — Embed Bridge
    Loaded inside iframe child pages. Reports
    content height to the parent shell and routes
    internal link clicks back to the parent so the

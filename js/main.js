@@ -1,5 +1,5 @@
 /* ============================================
-   SEDBM2025 — Main JavaScript
+   SEDBM2026 — Main JavaScript
    - initShell(): persistent UI (runs once)
    - initPageContent(): per-page content (runs
      on every SPA navigation via fetch router)
@@ -150,7 +150,7 @@ function initCountdown() {
 
     if (!daysEl && !hoursEl && !minutesEl && !secondsEl) return;
 
-    const conferenceDate = new Date('2025-11-13T09:00:00+07:00').getTime();
+    const conferenceDate = new Date('2026-11-12T09:00:00+07:00').getTime();
 
     function update() {
         const now = Date.now();
