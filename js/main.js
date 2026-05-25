@@ -17,11 +17,13 @@ document.addEventListener('DOMContentLoaded', () => {
             document.body.classList.remove('nav-compact');
         }
 
-        // Navbar color: add scrolled class for white bg (only on pages without default scrolled)
-        if (scrollY > 80) {
-            navbar.classList.add('scrolled');
-        } else if (!navbar.dataset.alwaysScrolled) {
-            navbar.classList.remove('scrolled');
+        if (navbar) {
+            // Navbar color: add scrolled class for white bg (only on pages without default scrolled)
+            if (scrollY > 80) {
+                navbar.classList.add('scrolled');
+            } else if (!navbar.dataset.alwaysScrolled) {
+                navbar.classList.remove('scrolled');
+            }
         }
 
         // Back to top button
@@ -35,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Mark pages that start with scrolled class so we don't remove it
-    if (navbar.classList.contains('scrolled')) {
+    if (navbar && navbar.classList.contains('scrolled')) {
         navbar.dataset.alwaysScrolled = 'true';
     }
 
@@ -45,6 +47,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // ---- Mobile nav toggle ----
     const navToggle = document.getElementById('navToggle');
     const navMenu = document.getElementById('navMenu');
+    const navClose = document.getElementById('navClose');
+
+    function closeMenu() {
+        if (navToggle) navToggle.classList.remove('active');
+        if (navMenu) navMenu.classList.remove('active');
+    }
 
     if (navToggle && navMenu) {
         navToggle.addEventListener('click', () => {
@@ -52,22 +60,26 @@ document.addEventListener('DOMContentLoaded', () => {
             navMenu.classList.toggle('active');
         });
 
+        // Close button inside drawer
+        if (navClose) {
+            navClose.addEventListener('click', closeMenu);
+        }
+
+        // Close when clicking the overlay (::before pseudo-element area outside drawer)
+        navMenu.addEventListener('click', (e) => {
+            if (e.target === navMenu) closeMenu();
+        });
+
         // Close menu when clicking a regular nav link (not dropdown toggles)
         navMenu.querySelectorAll('.nav-link').forEach(link => {
             if (!link.closest('.nav-dropdown') || link.parentElement.tagName === 'LI' && !link.parentElement.classList.contains('nav-dropdown')) {
-                link.addEventListener('click', () => {
-                    navToggle.classList.remove('active');
-                    navMenu.classList.remove('active');
-                });
+                link.addEventListener('click', closeMenu);
             }
         });
 
         // Close menu when clicking dropdown sub-links
         navMenu.querySelectorAll('.dropdown-menu a').forEach(link => {
-            link.addEventListener('click', () => {
-                navToggle.classList.remove('active');
-                navMenu.classList.remove('active');
-            });
+            link.addEventListener('click', closeMenu);
         });
 
         // Mobile dropdown toggle
