@@ -2015,6 +2015,13 @@ body.nav-compact .navbar {
     color: rgba(255, 255, 255, 0.5);
 }
 
+.speaker-detail-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
 .speaker-detail-content {
     padding: 36px 40px;
 }
@@ -2298,4 +2305,278 @@ body.nav-compact .navbar {
     .page-header {
         padding: 120px 24px 40px;
     }
+}
+
+/* ============================================
+   PAGE UTILITIES (replaces inline styles)
+   ============================================ */
+
+/* Section + card backgrounds */
+.section-bg-neutral { background: var(--neutral-50); }
+.section-bg-white { background: #fff; }
+
+/* Inline icon prefix inside h3 */
+.icon-lead {
+    color: var(--primary-500);
+    margin-right: 10px;
+}
+.icon-lead--accent { color: var(--accent-600); }
+.icon-trail { font-size: 0.8rem; }
+
+/* Generic bulleted list inside content cards */
+.bullet-list {
+    margin: 12px 0 0 20px;
+    list-style: disc;
+    color: var(--neutral-700);
+}
+.bullet-list--gap { margin: 12px 0 12px 20px; }
+
+/* Centered CTA block under cards */
+.center-cta {
+    text-align: center;
+    margin-top: 40px;
+}
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+
+.note-text {
+    margin-top: 24px;
+    color: var(--neutral-600);
+    font-style: italic;
+    font-size: 0.9rem;
+}
+
+/* Vertical stack of deadline rows */
+.stack-deadlines {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 16px;
+}
+
+/* Deadline pill (used in submission / registration / important dates) */
+.deadline-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.deadline-row,
+.deadline-pill {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 20px;
+    background: var(--primary-50);
+    border-radius: var(--radius-md);
+}
+.deadline-row--highlight,
+.deadline-pill--highlight {
+    background: linear-gradient(135deg, var(--accent-100), var(--accent-200));
+}
+.deadline-icon {
+    color: var(--primary-500);
+    font-size: 1.1rem;
+}
+.deadline-row--highlight .deadline-icon,
+.deadline-pill--highlight .deadline-icon { color: var(--accent-600); }
+.deadline-text strong,
+.deadline-pill strong { color: var(--primary-900); }
+.deadline-text span,
+.deadline-pill span {
+    margin-left: 8px;
+    color: var(--neutral-600);
+}
+
+/* Important Dates section */
+.important-dates-section { background: #fff; }
+
+/* Submission page extra spacing */
+.submission-cta {
+    text-align: center;
+    margin-top: 40px;
+}
+.h3-spaced { margin-top: 40px; }
+
+/* Registration fee table */
+.fee-table-wrap {
+    overflow-x: auto;
+    margin-top: 20px;
+}
+.fee-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+.fee-table thead tr {
+    background: var(--primary-700);
+    color: #fff;
+}
+.fee-table th {
+    padding: 16px 20px;
+    font-weight: 600;
+}
+.fee-table th:first-child { text-align: left; }
+.fee-table th:last-child { text-align: right; }
+.fee-table tbody tr { border-bottom: 1px solid var(--neutral-200); }
+.fee-table tbody tr:last-child { border-bottom: 0; }
+.fee-table td {
+    padding: 16px 20px;
+    color: var(--neutral-700);
+}
+.fee-table td:last-child {
+    text-align: right;
+    color: var(--primary-900);
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+.fee-table td > i {
+    color: var(--primary-500);
+    margin-right: 8px;
+}
+
+/* Conference fee includes list */
+.fee-includes {
+    margin: 16px 0 0 0;
+    list-style: none;
+    padding: 0;
+}
+.fee-includes li {
+    padding: 10px 0;
+    border-bottom: 1px solid var(--neutral-200);
+}
+.fee-includes li:last-child { border-bottom: 0; }
+.fee-includes i {
+    color: var(--primary-500);
+    margin-right: 10px;
+}
+
+/* History editions grid */
+.edition-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    margin-top: 20px;
+}
+.edition-card {
+    display: block;
+    padding: 20px;
+    background: var(--primary-50);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    transition: transform 0.2s;
+}
+.edition-card:hover { transform: translateY(-2px); }
+.edition-card strong {
+    color: var(--primary-900);
+    font-size: 1.2rem;
+}
+.edition-card p {
+    margin-top: 8px;
+    color: var(--neutral-600);
+    font-size: 0.9rem;
+}
+.edition-card--current {
+    background: linear-gradient(135deg, var(--accent-100), var(--accent-200));
+}
+.edition-card--current p { color: var(--neutral-700); }
+
+/* Programme placeholder */
+.placeholder-wrap {
+    margin: 40px auto;
+    max-width: 520px;
+}
+.placeholder-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 16px 28px;
+    background: linear-gradient(135deg, var(--accent-100), var(--accent-200));
+    border-radius: var(--radius-md);
+}
+.placeholder-badge i {
+    color: var(--accent-600);
+    font-size: 1.4rem;
+}
+.placeholder-badge strong {
+    color: var(--primary-900);
+    font-size: 1.1rem;
+}
+.placeholder-desc {
+    margin-top: 24px;
+    color: var(--neutral-600);
+}
+.placeholder-highlight {
+    margin-top: 28px;
+    text-align: left;
+}
+
+/* Venue map embed */
+.venue-map-wrap { margin-top: 20px; }
+.venue-map-wrap iframe {
+    border: 0;
+    border-radius: 12px;
+    width: 100%;
+    height: 400px;
+}
+
+/* Inquiry centered block */
+.contact-inquiry { text-align: center; }
+.contact-inquiry a {
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+/* Section header tighter spacing on sub-pages */
+.section-header--tight { margin-bottom: 40px; }
+
+/* Footer extras */
+.footer-acknowledgment {
+    margin-top: 32px;
+    padding: 20px 24px;
+    background: rgba(255, 255, 255, 0.05);
+    border-left: 3px solid var(--accent-400);
+    border-radius: var(--radius-sm);
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: var(--neutral-300);
+}
+.footer-acknowledgment strong {
+    color: var(--neutral-100);
+    display: block;
+    margin-bottom: 6px;
+}
+.footer-acknowledgment strong i {
+    color: var(--accent-400);
+    margin-right: 6px;
+}
+.footer-meta-line { margin-top: 10px; }
+.footer-meta-line i {
+    color: var(--accent-400);
+    margin-right: 6px;
+}
+
+/* Home page contact map embed */
+.home-map-iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    border-radius: 16px;
+}
+
+/* SPA router error state */
+.page-load-error {
+    padding: 80px 24px;
+    text-align: center;
+    color: var(--neutral-600);
+}
+.page-load-error h2 {
+    font-family: var(--font-serif);
+    color: var(--primary-900);
 }

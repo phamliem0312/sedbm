@@ -88,7 +88,7 @@
                     <ul class="dropdown-menu">
                         <li><a href="#submission.html" data-page="submission.html">Submission guideline</a></li>
                         <li><a href="#registration.html" data-page="registration.html">Registration</a></li>
-                        <li><a href="#submission.html" data-page="submission.html">Important Dates</a></li>
+                        <li><a href="#submission.html|important-dates" data-page="submission.html" data-anchor="important-dates">Important Dates</a></li>
                     </ul>
                 </li>
 
@@ -133,7 +133,7 @@
                     <img src="images/hvtc-logo.png" alt="SEDBM Logo" class="footer-logo-img">
                     <h4>SEDBM 2026</h4>
                     <p>International Conference on Sustainable Economic Development and Business Management: Opportunities and Challenges in Global Frontier Markets</p>
-                    <p style="margin-top: 10px;"><i class="fas fa-calendar-alt" style="color:var(--accent-400); margin-right:6px;"></i> November 12–14, 2026 · Hanoi, Vietnam</p>
+                    <p class="footer-meta-line"><i class="fas fa-calendar-alt"></i> November 12–14, 2026 · Hanoi, Vietnam</p>
                 </div>
                 <div class="footer-col-address">
                     <h4>Contact</h4>
@@ -170,9 +170,9 @@
                     </div>
                 </div>
             </div>
-            <div class="footer-acknowledgment" style="margin-top: 32px; padding: 20px 24px; background: rgba(255,255,255,0.05); border-left: 3px solid var(--accent-400); border-radius: var(--radius-sm); font-size: 0.85rem; line-height: 1.6; color: var(--neutral-300);">
-                <strong style="color: var(--neutral-100); display: block; margin-bottom: 6px;">
-                    <i class="fas fa-award" style="color: var(--accent-400); margin-right: 6px;"></i> Acknowledgment
+            <div class="footer-acknowledgment">
+                <strong>
+                    <i class="fas fa-award"></i> Acknowledgment
                 </strong>
                 The Microsoft CMT service was used for managing the peer-reviewing process for this conference. This service was provided for free by Microsoft and they bore all expenses, including costs for Azure cloud services as well as for software development and support.
             </div>
@@ -349,8 +349,8 @@
                 requestAnimationFrame(() => scrollToAnchor(anchor));
             } catch (err) {
                 container.innerHTML =
-                    '<div style="padding:80px 24px;text-align:center;color:var(--neutral-600);">' +
-                    '<h2 style="font-family:var(--font-serif);color:var(--primary-900);">Page failed to load</h2>' +
+                    '<div class="page-load-error">' +
+                    '<h2>Page failed to load</h2>' +
                     '<p>' + String(err.message || err) + '</p></div>';
             } finally {
                 if (ticket === inflight) container.classList.remove('is-loading');
