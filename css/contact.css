@@ -363,3 +363,31 @@
         grid-template-columns: 1fr;
     }
 }
+
+/* ── Phones ── */
+@media (max-width: 768px) {
+    .contact-main { padding: 56px 0; }
+    .contact-main-inner { padding: 0 20px; gap: 36px; }
+    .contact-strip-inner { padding: 0 20px; }
+    .strip-item { padding: 22px 4px; }
+}
+
+@media (max-width: 480px) {
+    .contact-main { padding: 44px 0; }
+    .contact-main-inner { padding: 0 16px; gap: 28px; }
+    .contact-strip-inner { padding: 0 16px; }
+
+    .contact-section-header h2 { font-size: 1.35rem; }
+
+    .person-card { padding: 16px 18px; gap: 14px; }
+    .person-avatar { width: 46px; height: 46px; }
+
+    .contact-form-card { padding: 26px 20px; border-radius: var(--radius-lg); }
+    .contact-form-card h3 { font-size: 1.2rem; }
+    .form-group { margin-bottom: 16px; }
+
+    .map-wrapper { margin-bottom: 22px; }
+    .map-wrapper iframe { height: 260px; }
+
+    .org-card { padding: 24px 20px; }
+}

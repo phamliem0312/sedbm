@@ -2963,3 +2963,158 @@ body.nav-compact .navbar {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 }
+
+/* ============================================
+   COMPREHENSIVE MOBILE REFINEMENTS
+   Applies across every page. Loaded last so it
+   refines the scattered breakpoints above.
+   Breakpoints: 768 (tablet/large phone),
+   480 (phone), 360 (small phone)
+   ============================================ */
+
+/* ---------- ≤ 768px : tablets & large phones ---------- */
+@media (max-width: 768px) {
+    /* Tighter gutters */
+    .container { padding: 0 20px; }
+
+    /* Hero: drop the tall min-height, let content size it */
+    .hero {
+        min-height: auto;
+        padding: 96px 20px 56px;
+    }
+    .hero-badge {
+        font-size: 0.8rem;
+        padding: 8px 18px;
+        margin-bottom: 20px;
+    }
+
+    /* Hero + CTA actions stack and go full-width */
+    .hero-actions,
+    .cta-actions {
+        flex-direction: column;
+        gap: 12px;
+        width: 100%;
+    }
+    .hero-actions .btn,
+    .cta-actions .btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    /* Section rhythm */
+    .section-header { margin-bottom: 36px; }
+    .section-desc { font-size: 0.95rem; }
+    .section-cta { margin-top: 32px; }
+
+    /* Sub-page content blocks */
+    .page-content { padding: 56px 0; }
+    .content-card + .content-card { margin-top: 24px; }
+    .content-card h3 { font-size: 1.25rem; }
+
+    /* About */
+    .about-content h3 { font-size: 1.3rem; }
+
+    /* CTA banner */
+    .cta-section { padding: 64px 20px; }
+
+    /* Deadline pills: date over description */
+    .deadline-row,
+    .deadline-pill { padding: 14px 16px; }
+
+    /* Registration fee table */
+    .fee-table th,
+    .fee-table td { padding: 13px 14px; }
+    .fee-table td:last-child { font-size: 1rem; }
+
+    /* Floating controls closer to the corner */
+    .back-to-top {
+        bottom: 20px;
+        right: 20px;
+        width: 44px;
+        height: 44px;
+    }
+}
+
+/* ---------- ≤ 480px : phones ---------- */
+@media (max-width: 480px) {
+    html { scroll-padding-top: 80px; }
+
+    .container { padding: 0 16px; }
+
+    /* Allow long button labels (e.g. "Submit Your Paper via CMT") to wrap */
+    .btn { white-space: normal; }
+    .btn-lg { padding: 14px 24px; font-size: 0.95rem; }
+
+    /* Hero */
+    .hero { padding: 88px 16px 48px; }
+    .hero-title { font-size: 1.55rem; }
+    .hero-subtitle { font-size: 12px; letter-spacing: 0.1em; }
+
+    /* Countdown: compact 2×2, drop the ":" separators */
+    .countdown { gap: 10px; }
+    .countdown-separator { display: none; }
+    .countdown-item {
+        min-width: 0;
+        flex: 1 1 40%;
+        padding: 10px 8px;
+    }
+    .countdown-number { font-size: 1.35rem; }
+
+    /* Stats bar (kept 2×2 from earlier rule) */
+    .stat-item { padding: 24px 12px; }
+    .stat-number { font-size: 1.5rem; }
+    .stat-icon { width: 40px; height: 40px; font-size: 1.05rem; }
+
+    /* Sections */
+    .section-header { margin-bottom: 28px; }
+    .section-tag { font-size: 0.7rem; padding: 5px 16px; }
+    .page-content { padding: 44px 0; }
+
+    /* Page header (sub-pages) */
+    .page-header { padding: 104px 16px 32px; }
+    .page-header p { font-size: 0.95rem; }
+
+    /* Cards */
+    .content-card { padding: 24px 20px; }
+    .content-card h3 { font-size: 1.15rem; }
+    .highlight-box { padding: 16px 18px; }
+
+    /* CTA buttons that sit alone go full-width */
+    .center-cta .btn,
+    .section-cta .btn,
+    .submission-cta .btn { width: 100%; justify-content: center; }
+
+    /* Deadline pills stack the label under the date */
+    .deadline-text strong,
+    .deadline-pill strong { display: block; }
+    .deadline-text span,
+    .deadline-pill span { margin-left: 0; display: block; }
+
+    /* Photos on venue / publication pages */
+    .venue-photo { height: 200px; }
+    .publication-photo { height: 200px; }
+
+    /* Speaker detail bio */
+    .speaker-detail-content { padding: 22px 20px; }
+    .speaker-detail-content h3 { font-size: 1.3rem; }
+
+    /* CTA banner copy */
+    .cta-content p { font-size: 0.95rem; }
+}
+
+/* ---------- ≤ 360px : small phones ---------- */
+@media (max-width: 360px) {
+    .hero-title { font-size: 1.35rem; }
+
+    /* Countdown back to a single row of four small cells */
+    .countdown-item { padding: 8px 4px; }
+    .countdown-number { font-size: 1.15rem; }
+    .countdown-label { font-size: 0.6rem; }
+
+    /* Stats single column to avoid cramped numbers */
+    .stats-grid { grid-template-columns: 1fr; }
+    .stat-item:not(:last-child)::after { display: none; }
+
+    .content-card { padding: 20px 16px; }
+    .section-title { font-size: 1.5rem; }
+}
