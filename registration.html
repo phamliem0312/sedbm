@@ -11,125 +11,35 @@
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-    <!-- Page Header -->
-    <div class="page-header">
-        <h1>Registration</h1>
-        <p>SEDBM 2026 Conference registration fees, policies and key dates</p>
-    </div>
-
-    <!-- Content -->
     <section class="page-content section-bg-neutral">
         <div class="container">
-
-            <!-- Registration Fees Table -->
             <div class="content-card" data-aos="fade-up">
-                <h3><i class="fas fa-ticket-alt icon-lead"></i> SEDBM 2026 Conference Registration Fees</h3>
-                <div class="fee-table-wrap">
-                    <table class="fee-table">
-                        <thead>
-                            <tr>
-                                <th>Registration Type</th>
-                                <th>Amount (VND)</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <i class="fas fa-user-graduate"></i>
-                                    <strong>PhD Candidate Category</strong>
-                                </td>
-                                <td>2.000.000 VND</td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <i class="fas fa-chalkboard-teacher"></i>
-                                    <strong>Faculty Category</strong>
-                                </td>
-                                <td>3.000.000 VND</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- Registration Policy -->
-            <div class="content-card" data-aos="fade-up">
-                <h3><i class="fas fa-file-contract icon-lead"></i> Registration Policy</h3>
+                <h3><i class="fas fa-info-circle icon-lead"></i> Registration Has Been Moved</h3>
                 <p>
-                    The registration fees apply for a maximum of <strong>12 pages</strong> only. Additional pages
-                    will be charged extra at <strong>500.000 VND per page</strong>, up to a maximum of
-                    <strong>15 pages</strong>.
+                    Registration information is now part of the unified
+                    <strong>Submission &amp; Registration</strong> page.
                 </p>
                 <p>
-                    In case a co-author wishes to attend the conference, it is advisable to register well in
-                    advance instead of submitting a spot registration request.
+                    If you are not redirected automatically, please continue here:
+                    <a href="index.html#submission.html|registration-information">Submission &amp; Registration</a>
                 </p>
-            </div>
-
-            <!-- Refund Policy -->
-            <div class="content-card" data-aos="fade-up">
-                <h3><i class="fas fa-undo-alt icon-lead"></i> Refund Policy</h3>
-                <p>
-                    Should an author wish to cancel a registration for any reason, the conference will refund
-                    only <strong>50% of the fee</strong>.
-                </p>
-                <div class="highlight-box">
-                    <p>
-                        <i class="fas fa-exclamation-circle"></i>
-                        <strong>Deadline:</strong> The last date to submit a registration cancellation request is
-                        <strong>October 30, 2026</strong>.
-                    </p>
-                </div>
-            </div>
-
-            <!-- Conference Fee Includes -->
-            <div class="content-card" data-aos="fade-up">
-                <h3><i class="fas fa-check-circle icon-lead"></i> Conference Fee Includes</h3>
-                <ul class="fee-includes">
-                    <li><i class="fas fa-microphone"></i> Admission to Science Sessions</li>
-                    <li><i class="fas fa-coffee"></i> Coffee Breaks</li>
-                    <li><i class="fas fa-utensils"></i> Lunches</li>
-                    <li><i class="fas fa-glass-cheers"></i> Gala Dinner</li>
-                    <li><i class="fas fa-certificate"></i> Certificate of Attendance</li>
-                </ul>
-            </div>
-
-            <!-- Key Dates -->
-            <div class="content-card" data-aos="fade-up">
-                <h3><i class="fas fa-calendar-check icon-lead"></i> Key Dates</h3>
-                <ul class="deadline-list">
-                    <li class="deadline-row">
-                        <i class="fas fa-user-plus deadline-icon"></i>
-                        <div class="deadline-text">
-                            <strong>October 20, 2026</strong>
-                            <span>— Registration Deadline</span>
-                        </div>
-                    </li>
-                    <li class="deadline-row">
-                        <i class="fas fa-undo-alt deadline-icon"></i>
-                        <div class="deadline-text">
-                            <strong>October 30, 2026</strong>
-                            <span>— Last date for cancellation request (50% refund)</span>
-                        </div>
-                    </li>
-                    <li class="deadline-row deadline-row--highlight">
-                        <i class="fas fa-star deadline-icon"></i>
-                        <div class="deadline-text">
-                            <strong>November 12–14, 2026</strong>
-                            <span>— Conference Dates (Hanoi, Vietnam)</span>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-
-            <!-- Contact for Inquiries -->
-            <div class="content-card contact-inquiry" data-aos="fade-up">
-                <p>For registration inquiries, please contact us at:</p>
-                <p><a href="mailto:aof_sedbm@hvtc.edu.vn">aof_sedbm@hvtc.edu.vn</a></p>
             </div>
         </div>
     </section>
-    <script src="js/embed-bridge.js"></script>
-    <script src="js/main.js"></script>
+    <script>
+    (function () {
+        const targetHash = '#submission.html|registration-information';
+        const isShellPage = /\/(?:index\.html)?$/i.test(globalThis.location.pathname);
+
+        if (isShellPage) {
+            if (globalThis.location.hash !== targetHash) {
+                globalThis.location.hash = targetHash;
+            }
+            return;
+        }
+
+        globalThis.location.replace(`index.html${targetHash}`);
+    })();
+    </script>
 </body>
 </html>
