@@ -9,6 +9,9 @@ let countdownInterval = null;
 let countersAnimated = false;
 let aosCheckBound = false;
 let smoothScrollBound = false;
+let partnerSliderResizeBound = false;
+let partnerSliderResizeTimer = null;
+let partnerSliderInitializing = false;
 
 /* ──────────────────────────────────────────────
    SHELL (runs once on first DOMContentLoaded)
@@ -43,7 +46,7 @@ function initShell() {
         }
     }
 
-    if (navbar && navbar.classList.contains('scrolled')) {
+    if (navbar?.classList.contains('scrolled')) {
         navbar.dataset.alwaysScrolled = 'true';
     }
 
@@ -124,14 +127,33 @@ function initShell() {
         window.addEventListener('scroll', runCounterAnimation);
         aosCheckBound = true;
     }
+
+    if (!partnerSliderResizeBound) {
+        window.addEventListener('resize', () => {
+            if (partnerSliderResizeTimer) {
+                clearTimeout(partnerSliderResizeTimer);
+            }
+            partnerSliderResizeTimer = setTimeout(() => {
+                partnerSliderResizeTimer = null;
+                initPartnersMobileSlider();
+            }, 150);
+        });
+        partnerSliderResizeBound = true;
+    }
 }
 
 /* ──────────────────────────────────────────────
    PAGE CONTENT (runs after each fetch navigation)
    ────────────────────────────────────────────── */
 function initPageContent() {
+    if (partnerSliderResizeTimer) {
+        clearTimeout(partnerSliderResizeTimer);
+        partnerSliderResizeTimer = null;
+    }
+
     initCountdown();
     initParticles();
+    initPartnersMobileSlider();
     countersAnimated = false;
     setTimeout(runAOSCheck, 100);
     setTimeout(runCounterAnimation, 200);
@@ -187,6 +209,75 @@ function initParticles() {
     }
 }
 
+function trimPartnerClones(partnersGrid, originalCount) {
+    while (partnersGrid.children.length > originalCount) {
+        const trailingCard = partnersGrid.lastElementChild;
+        if (!trailingCard) break;
+        trailingCard.remove();
+    }
+}
+
+function hasExpectedPartnerCardCount(partnersGrid, originalCount) {
+    const expectedWithClones = originalCount * 2;
+    const currentCount = partnersGrid.children.length;
+    return currentCount === originalCount || currentCount === expectedWithClones;
+}
+
+function initPartnersMobileSlider() {
+    if (partnerSliderInitializing) return;
+    partnerSliderInitializing = true;
+
+    try {
+        const partnersGrid = document.querySelector('.partners-grid');
+        if (!partnersGrid) return;
+
+        // Keep this value aligned with CSS @media (max-width: 768px).
+        const MOBILE_BREAKPOINT = 768;
+        // Approximate speed to keep card names readable on smaller screens.
+        const PIXELS_PER_SECOND = 42;
+
+        if (!partnersGrid.dataset.originalCount) {
+            partnersGrid.dataset.originalCount = String(partnersGrid.children.length);
+        }
+
+        const originalCount = Number.parseInt(partnersGrid.dataset.originalCount, 10);
+        const shouldEnableSlider = window.innerWidth <= MOBILE_BREAKPOINT;
+
+        if (!shouldEnableSlider) {
+            trimPartnerClones(partnersGrid, originalCount);
+            partnersGrid.classList.remove('is-mobile-slider', 'is-slider-running');
+            partnersGrid.style.removeProperty('--partners-scroll-distance');
+            partnersGrid.style.removeProperty('--partners-scroll-duration');
+            return;
+        }
+
+        if (!hasExpectedPartnerCardCount(partnersGrid, originalCount)) {
+            trimPartnerClones(partnersGrid, originalCount);
+        }
+
+        if (partnersGrid.children.length === originalCount) {
+            const originalCards = Array.from(partnersGrid.children).slice(0, originalCount);
+            originalCards.forEach((card) => {
+                const clone = card.cloneNode(true);
+                clone.setAttribute('aria-hidden', 'true');
+                partnersGrid.appendChild(clone);
+            });
+        }
+
+        partnersGrid.classList.add('is-mobile-slider');
+        partnersGrid.classList.remove('is-slider-running');
+
+        const scrollDistance = Math.round(partnersGrid.scrollWidth / 2);
+        const durationSeconds = Math.max(scrollDistance / PIXELS_PER_SECOND, 18);
+
+        partnersGrid.style.setProperty('--partners-scroll-distance', `${scrollDistance}px`);
+        partnersGrid.style.setProperty('--partners-scroll-duration', `${durationSeconds.toFixed(2)}s`);
+        partnersGrid.classList.add('is-slider-running');
+    } finally {
+        partnerSliderInitializing = false;
+    }
+}
+
 function runAOSCheck() {
     const aosElements = document.querySelectorAll('[data-aos]:not(.aos-animate)');
     const windowHeight = window.innerHeight;
@@ -234,7 +325,7 @@ function runCounterAnimation() {
 }
 
 /* Expose for the router to call after each navigation */
-window.SEDBM_PAGE_INIT = initPageContent;
+globalThis.SEDBM_PAGE_INIT = initPageContent;
 
 /* Boot */
 document.addEventListener('DOMContentLoaded', () => {
