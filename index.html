@@ -71,7 +71,7 @@
                         <li><a href="#">SEDBM 2022</a></li>
                         <li><a href="#">SEDBM 2023</a></li>
                         <li><a href="#">SEDBM 2024</a></li>
-                        <li><a href="#history.html" data-page="history.html">SEDBM 2025</a></li>
+                        <li><a href="2025.html">SEDBM 2025</a></li>
                     </ul>
                 </li>
 
@@ -222,6 +222,11 @@
             if (href) HOSTED_STYLES.add(href);
         });
 
+        function redirectToSedbm2025(anchor) {
+            const target = '2025.html' + (anchor ? '#' + anchor : '');
+            globalThis.location.href = target;
+        }
+
         function parseHash() {
             const raw = (window.location.hash || '').replace(/^#/, '');
             if (!raw) return { page: DEFAULT_PAGE, anchor: '' };
@@ -233,6 +238,10 @@
             } else {
                 page = raw;
                 anchor = '';
+            }
+            if (page === '2025.html') {
+                redirectToSedbm2025(anchor);
+                return { page: DEFAULT_PAGE, anchor: '' };
             }
             if (!PAGES[page]) return { page: DEFAULT_PAGE, anchor: '' };
             return { page, anchor };
@@ -379,9 +388,14 @@
                     const cleaned = href.replace(/^#/, '');
                     const bar = cleaned.indexOf('|');
                     const filePart = bar >= 0 ? cleaned.slice(0, bar) : cleaned;
+                    const anchorPart = bar >= 0 ? cleaned.slice(bar + 1) : '';
+                    if (filePart === '2025.html') {
+                        e.preventDefault();
+                        redirectToSedbm2025(anchorPart);
+                        return;
+                    }
                     if (PAGES[filePart]) {
                         e.preventDefault();
-                        const anchorPart = bar >= 0 ? cleaned.slice(bar + 1) : '';
                         loadPage(filePart, anchorPart, false);
                     }
                     return;
